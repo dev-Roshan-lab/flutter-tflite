@@ -12,7 +12,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final cameras = await availableCameras();
   // Get a specific camera from the list of available cameras.
-  final firstCamera = cameras.first;
+  final firstCamera = cameras.first;// get the first camera or back camera
   runApp(MaterialApp(
     theme: ThemeData.dark(),
     home: Tensorflow(
@@ -104,6 +104,7 @@ class _TensorflowState extends State<Tensorflow> {
     _controller?.dispose();
     super.dispose();
   }
+  //function for picking an image from gallery
   /*pickImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     if (image == null) return null;
@@ -130,21 +131,14 @@ class _TensorflowState extends State<Tensorflow> {
 
               (await getTemporaryDirectory()).path,
               '${DateTime.now()}.png',
-            );
-            var image = await _controller.takePicture(path);
+            );//get the cached image location
+            //var image = await _controller.takePicture(path);
             classifyImage(path);
             setState(() {
               _captured = true;
               pic = path;
             });
-            /*Navigator.push(
-
-              context,
-              MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(imagePath: path),
-              ),
-
-            );*/
+            
           } catch (e) {print(e);}
         },
         child: Icon(Icons.camera,
@@ -154,48 +148,7 @@ class _TensorflowState extends State<Tensorflow> {
         backgroundColor: Colors.greenAccent,
       ),
 
-      /*body: Container(
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _loading ? Container(
-              height: 300,
-              width: 300,
-            ):
-            Container(
-              margin: EdgeInsets.all(20),
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _image == null ? Container() : Image.file(_image),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  _image == null ? Container() : _outputs != null ?
-                  Text(_outputs[0]["label"],style: TextStyle(color: Colors.black,fontSize: 20),
-                  ) : Container(child: Text(""))
-                ],
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
-            ),
-            FloatingActionButton(
-              tooltip: 'Pick Image',
-              onPressed: pickImage,
-              child: Icon(Icons.add_a_photo,
-                size: 20,
-                color: Colors.white,
-              ),
-              backgroundColor: Colors.amber,
-            ),
-          ],
-        ),
-      ),*/
-
+      //use a terniary operator to load image if captured by pressinf the fab button
       body: _captured ? Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -225,31 +178,6 @@ class _TensorflowState extends State<Tensorflow> {
             return Center(child: CircularProgressIndicator());
           }
         },
-      ),
-
-    );
-  }
-}
-class DisplayPictureScreen extends StatelessWidget {
-  final String imagePath;
-  final Map value;
-  const DisplayPictureScreen({Key key, this.imagePath, this.value}) : super(key: key);
-
-
-  @override
-
-  Widget build(BuildContext context) {
-    return Scaffold(
-      /*appBar: AppBar(title: Text(value[0]["label"],style: TextStyle(color: Colors.black,fontSize: 20),
-      )),*/
-      // The image is stored as a file on the device. Use the `Image.file`
-      // constructor with the given path to display the image.
-      body: Column(
-        children: [
-          Image.file(File(imagePath)),
-          Text(value[0]["labels"])
-
-        ],
       ),
 
     );
